@@ -5,6 +5,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 
 /**
  * Simple data entity describing basic properties of every JavaScript framework.
@@ -20,17 +24,21 @@ public class JavaScriptFramework {
 	private Long id;
 
 	@Column(nullable = false, length = 30)
+	@NotNull
 	private String name;
 
 	@Column(nullable = false, length = 10)
+	@NotNull
 	private String version;
 
 
 
 	@Column(nullable = false)
+	@Positive
 	private Long deprecationDate;
 
 	@Column(nullable = false)
+	@Positive
 	private byte hypeLevel;
 	
 	public JavaScriptFramework() {
