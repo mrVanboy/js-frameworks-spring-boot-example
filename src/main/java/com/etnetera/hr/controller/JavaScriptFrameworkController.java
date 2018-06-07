@@ -3,6 +3,7 @@ package com.etnetera.hr.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,6 +46,12 @@ public class JavaScriptFrameworkController {
 	public JavaScriptFramework getFramework(@PathVariable Long id) {
 		Optional<JavaScriptFramework> item = repository.findById(id);
 		return item.orElseThrow(() -> new NotFoundException(id));
+	}
+
+	@DeleteMapping("/frameworks/{id}")
+	public ResponseEntity<Void> deleteFramework(@PathVariable Long id) {
+		repository.deleteById(id);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
 	@PostMapping("/frameworks")
