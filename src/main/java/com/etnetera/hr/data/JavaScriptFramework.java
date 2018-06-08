@@ -1,5 +1,7 @@
 package com.etnetera.hr.data;
 
+import org.springframework.data.annotation.Transient;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -40,6 +42,9 @@ public class JavaScriptFramework {
 	@Column(nullable = false)
 	@Positive
 	private byte hypeLevel;
+
+	@Transient
+	private boolean deprecated;
 	
 	public JavaScriptFramework() {
 	}
