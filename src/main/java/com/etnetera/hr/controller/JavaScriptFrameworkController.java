@@ -14,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -65,6 +66,14 @@ public class JavaScriptFrameworkController {
         JavaScriptFramework framework = item.orElseThrow(() -> new NotFoundException(id));
         repository.delete(framework);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PutMapping("/frameworks/{id}")
+    public JavaScriptFramework putFramework(@PathVariable Long id, @Validated @RequestBody JavaScriptFramework framework){
+        if (!Objects.equals(framework.getId(), id)) {
+            throw new BadRequestException("id in path does not equal id in body: " + id + " != " + framework.getId());
+        }
+        return repository.save(framework);
     }
 
     @PatchMapping("/frameworks/{id}")

@@ -31,10 +31,12 @@ public class JavaScriptFramework {
 
 	@Column(nullable = false)
 	@Positive
+	@NotNull
 	private Long deprecationDate;
 
 	@Column(nullable = false)
 	@Positive
+	@NotNull
 	private Byte hypeLevel;
 
 	@Transient
