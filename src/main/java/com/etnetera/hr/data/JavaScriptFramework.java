@@ -2,15 +2,9 @@ package com.etnetera.hr.data;
 
 import org.springframework.data.annotation.Transient;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.validation.constraints.NotEmpty;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
-import javax.validation.constraints.Size;
 
 /**
  * Simple data entity describing basic properties of every JavaScript framework.
@@ -41,10 +35,10 @@ public class JavaScriptFramework {
 
 	@Column(nullable = false)
 	@Positive
-	private byte hypeLevel;
+	private Byte hypeLevel;
 
 	@Transient
-	private boolean deprecated;
+	private Boolean deprecated;
 	
 	public JavaScriptFramework() {
 	}
@@ -53,7 +47,7 @@ public class JavaScriptFramework {
 			String name,
 			String version,
 			Long deprecationDate,
-			byte hypeLevel
+			Byte hypeLevel
 	) {
 		this.name = name;
 		this.version = version;
