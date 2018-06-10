@@ -1,0 +1,200 @@
+openapi: 3.0.0
+info:
+  title: JavaScript Frameworks API
+  description: Example of Spring Boot app
+  version: 0.1.0
+servers:
+  - url: http://localhost:8080
+    description: local
+paths:
+  /frameworks:
+    get:
+      summary: Get a list of stored frameworks with ability to filter results
+      parameters:
+        - name: name
+          in: query
+          description: Case ignored name of the framework
+          required: false
+          example:
+            $ref: '#/components/schemas/framework/properties/name/example'
+          schema:
+            $ref: "#/components/schemas/framework/properties/name"
+        - name: version
+          in: query
+          description: Case ignored version of the framework
+          required: false
+          example:
+            $ref: '#/components/schemas/framework/properties/version/example'
+          schema:
+            $ref: "#/components/schemas/framework/properties/version"
+        - name: deprecationDate
+          in: query
+          description: Deprecation date in Unix Epoch format
+          required: false
+          example:
+            $ref: '#/components/schemas/framework/properties/deprecationDate/example'
+          schema:
+            $ref: "#/components/schemas/framework/properties/deprecationDate"
+        - name: deprecated
+          in: query
+          description: Filter deprecated or not deprecated frameworks
+          required: false
+          example: false
+          schema:
+            type: boolean
+        - name: hypeLevel
+          in: query
+          description: |
+                          Filter by hypeLevel fiels. It is also **possible to send**
+                          *hypeLevel* parameter **twice** for filtering frameworks
+                          with hypeLevel between parameters values. For example
+                          `hypeLevel=1&hypeLevel=5` filter frameworks like
+                          `(1 <= framework.hypeLevel <= 5)`. **Order is not matter.**
+          required: false
+          example:
+            $ref: '#/components/schemas/framework/properties/hypeLevel/example'
+          schema:
+            $ref: "#/components/schemas/framework/properties/hypeLevel"
+      responses:
+        200:
+          description: List of all frameworks
+          content:
+            'application/json':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/framework"
+    post:
+      summary: Create the new framework.
+      requestBody:
+        description: JSON object for creating the framework
+        content:
+          'application/json':
+            schema:
+              type: object
+              properties:
+                name:
+                  $ref: "#/components/schemas/framework/properties/name"
+                version:
+                  $ref: "#/components/schemas/framework/properties/version"
+                deprecationDate:
+                  $ref: "#/components/schemas/framework/properties/deprecationDate"
+                hypeLevel:
+                  $ref: "#/components/schemas/framework/properties/hypeLevel"
+              required:
+                - name
+                - version
+                - deprecationDate
+                - hypeLevel
+      responses:
+        201:
+          description: Rule was created.
+          content:
+            'application/json':
+              schema:
+                $ref: "#/components/schemas/framework"
+        400:
+          description: Request body doesn't have fields from specification.
+  /frameworks/{id}:
+    get:
+      summary: Get specific framework
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of the framework to retrieve
+          example:
+            $ref: '#/components/schemas/framework/properties/id/example'
+          schema:
+            $ref: '#/components/schemas/framework/properties/id'
+      responses:
+        200:
+          description: Rule with specified {id} exist and will be returned in body
+          content:
+            'application/json':
+              schema:
+                $ref: "#/components/schemas/framework"
+        404:
+          description: Framework with specified `{id}` wasn't found
+    patch:
+      summary: Patch value of the framework with specified {id}
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of the framework to patch
+          example:
+            $ref: '#/components/schemas/framework/properties/id/example'
+          schema:
+            $ref: '#/components/schemas/framework/properties/id'
+      requestBody:
+        description: Object that contains any of parameters specified below
+        content:
+          'application/json':
+            schema:
+              type: object
+              properties:
+                name:
+                  $ref: "#/components/schemas/framework/properties/name"
+                version:
+                  $ref: "#/components/schemas/framework/properties/version"
+                deprecationDate:
+                  $ref: "#/components/schemas/framework/properties/deprecationDate"
+                hypeLevel:
+                  $ref: "#/components/schemas/framework/properties/hypeLevel"
+      responses:
+        200:
+          description: Rule wtih specified {id} was succesfully updated and will be returned in body
+          content:
+            'application/json':
+              schema:
+                $ref: "#/components/schemas/framework"
+        400:
+          description: Request body doesn't have fields from specification.
+        404:
+          description: Framework with specified `{id}` wasn't found
+    delete:
+      summary: Delete the framework with specified {id}
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of the rule to delete
+          example:
+            $ref: '#/components/schemas/framework/properties/id/example'
+          schema:
+            $ref: '#/components/schemas/framework/properties/id'
+      responses:
+        204:
+          description: Framework with specified `{id}` was succesfully deleted
+        404:
+          description: Framework with specified `{id}` wasn't found
+
+
+components:
+  schemas:
+    framework:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Unique identificator of the framework in system
+          example: 1
+        name:
+          type: string
+          description: Name of the JavaScript framework
+          example: Angular
+        version:
+          type: string
+          description: Version of the JavaScript framework
+          example: 6.0.0
+        deprecationDate:
+          type: number
+          description: Unix Epoch timestamp of the deprecation date
+          example: 1572735600
+        hypeLevel:
+          type: number
+          description: Level of the fantastic irratioanal admiration for the framework
+          minimum: 1
+          maximum: 10
+          example: 2
