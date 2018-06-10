@@ -3,8 +3,10 @@ package com.etnetera.hr.data;
 import org.springframework.data.annotation.Transient;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import java.time.Instant;
 
 /**
  * Simple data entity describing basic properties of every JavaScript framework.
@@ -37,6 +39,7 @@ public class JavaScriptFramework {
 	@Column(nullable = false)
 	@Positive
 	@NotNull
+	@Max(10)
 	private Byte hypeLevel;
 
 	@Transient
@@ -75,7 +78,8 @@ public class JavaScriptFramework {
 
 	@Override
 	public String toString() {
-		return "JavaScriptFramework [id=" + id + ", name=" + name + "]";
+		return String.format("JavaScriptFramework [id=%d, name=%s, version=%s, hypeLevel=%d, deprecationDate=%d(%s)]",
+								id, name, version, hypeLevel, deprecationDate, Instant.ofEpochSecond(deprecationDate));
 	}
 
 	public Long getDeprecationDate() {
@@ -86,7 +90,7 @@ public class JavaScriptFramework {
 		this.deprecationDate = deprecationDate;
 	}
 
-	public byte getHypeLevel() {
+	public Byte getHypeLevel() {
 		return hypeLevel;
 	}
 
