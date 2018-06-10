@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="./swagger-ui-bundle.js"></script>
+    <link rel="stylesheet" href="./swagger-ui.css">
+    <script type="text/javascript">
+        window.hasOwnProperty("SwaggerUIBundle") || document.write('<script src="https://unpkg.com/swagger-ui-dist@3.17.0/swagger-ui-bundle.js"><\/script>');
+        document.styleSheets[0].rules.length > 0 || document.write('<link rel="stylesheet" href="https://cdn.rawgit.com/swagger-api/swagger-ui/v/3.17.0/dist/swagger-ui.css">');
+    </script>
+</head>
+<body>
+<div id="swagger-ui"></div>
+<script type="text/javascript">
+    SwaggerUIBundle({
+        url: "./openapi.yml",
+        dom_id: '#swagger-ui'
+    })
+</script>
+</body>
+</html>
