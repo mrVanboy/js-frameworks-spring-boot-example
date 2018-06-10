@@ -1,0 +1,11 @@
+# Created by .ignore support plugin (hsz.mobi)
+.gradle
+.idea
+bin
+build
+gradle
+out
+src/main/java/**/Q*.java
+gradlew
+gradlew.bat
+.gitignore
