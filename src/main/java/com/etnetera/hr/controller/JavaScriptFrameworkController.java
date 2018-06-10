@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -97,7 +98,9 @@ public class JavaScriptFrameworkController {
     }
 
     @PostMapping("/frameworks")
-    public JavaScriptFramework postFramework(@Validated @RequestBody JavaScriptFramework framework) {
-        return this.repository.save(framework);
+    public JavaScriptFramework postFramework(@Validated @RequestBody JavaScriptFramework framework, HttpServletResponse response) {
+        final JavaScriptFramework savedFramework = this.repository.save(framework);
+        response.setStatus(HttpServletResponse.SC_CREATED);
+        return savedFramework;
     }
 }
