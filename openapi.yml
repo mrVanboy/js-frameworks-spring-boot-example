@@ -116,6 +116,49 @@ paths:
                 $ref: "#/components/schemas/framework"
         404:
           description: Framework with specified `{id}` wasn't found
+    put:
+      summary: Put full framework entity for creating new or updating existing.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of the framework to retrieve
+          example:
+            $ref: '#/components/schemas/framework/properties/id/example'
+          schema:
+            $ref: '#/components/schemas/framework/properties/id'
+      requestBody:
+        description: JSON object for creating the framework. `id`'s in the body and in the path must equal.
+        content:
+          'application/json':
+            schema:
+              type: object
+              properties:
+                id:
+                  $ref: "#/components/schemas/framework/properties/id"
+                name:
+                  $ref: "#/components/schemas/framework/properties/name"
+                version:
+                  $ref: "#/components/schemas/framework/properties/version"
+                deprecationDate:
+                  $ref: "#/components/schemas/framework/properties/deprecationDate"
+                hypeLevel:
+                  $ref: "#/components/schemas/framework/properties/hypeLevel"
+              required:
+                - id
+                - name
+                - version
+                - deprecationDate
+                - hypeLevel
+      responses:
+        200:
+          description: Rule wtih specified {id} was succesfully updated and will be returned in body
+          content:
+            'application/json':
+              schema:
+                $ref: "#/components/schemas/framework"
+        400:
+          description: Request body doesn't have fields from specification.
     patch:
       summary: Patch value of the framework with specified {id}
       parameters:
