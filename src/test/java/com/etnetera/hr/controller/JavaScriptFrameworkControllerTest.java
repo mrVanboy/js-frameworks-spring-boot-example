@@ -175,6 +175,57 @@ public class JavaScriptFrameworkControllerTest {
     }
 
     @Test
+    public void ShouldPutFramework() throws Exception {
+        final JavaScriptFramework framework = Iterables.getLast(defaultRepositoryItems);
+
+        Map<String, Object> initState = new HashMap<>();
+        initState.put("id", framework.getId());
+        initState.put("name", framework.getName() );
+        initState.put("deprecationDate", framework.getDeprecationDate() );
+        initState.put("version", framework.getVersion());
+        initState.put("hypeLevel", framework.getHypeLevel() );
+
+        final List<Map<String, Object>> patchFixtures = generatePatchFixtures();
+
+        for (Map<String, Object> fixture : patchFixtures) {
+            Map<String, Object> mapBody = new HashMap<>(initState);
+            mapBody.putAll(fixture);
+
+            final JSONObject jsonBody = new JSONObject();
+            jsonBody.putAll(mapBody);
+
+            final ResultActions result = mockMvc.perform(put("/frameworks/" + framework.getId())
+                    .content(jsonBody.toString())
+                    .contentType(MediaType.APPLICATION_JSON_UTF8))
+                    .andExpect(status().isOk());
+
+            // check that all fields from fixture was changed
+            for (Map.Entry<String, Object> field : fixture.entrySet()) {
+                result.andExpect(jsonPath("$."+field.getKey(), is(field.getValue())));
+            }
+        }
+    }
+
+    @Test
+    public void ShouldNotPutWithBadId() throws Exception {
+        final JavaScriptFramework framework = Iterables.getLast(defaultRepositoryItems);
+        final String fixture = String.join("\n",
+                "{",
+                "  \"id\": \""+ (framework.getId() - 1) +"\",",
+                "  \"name\": \"fixture\",",
+                "  \"version\": \"3.2.1\",",
+                "  \"deprecationDate\": 1572735600,",
+                "  \"hypeLevel\": 1",
+                "}"
+        );
+
+        mockMvc.perform(put("/frameworks/" + framework.getId())
+                        .content(fixture)
+                        .contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
     public void ShouldDeleteFramework() throws Exception {
         final JavaScriptFramework frameworkToDelete = defaultRepositoryItems.iterator().next();
         final int initSize = Iterables.size(defaultRepositoryItems);
